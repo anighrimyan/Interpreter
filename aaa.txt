@@ -1,0 +1,40 @@
+num a = 1 , b = 4 , c = 2.5 + 7.5 , d = c , e  =  d + a , k = a + 7.58 ;
+str w = barev ;
+print -> w ;
+newline
+print -> a__ ;  print -> a ; newline
+a = b + c  ;  print -> a_n_poxvec ;  print -> a ;
+newline
+print -> b__ ;  print -> b ;
+print -> c__ ;  print -> c ;
+print -> d__ ;  print -> d ;
+print -> e__ ;  print -> e ;
+print -> k__ ;  print -> k ;
+a = 0 ;
+if -> a  ;
+print -> a_zro_e_stugenq_a_n_ ; 
+print -> a ;
+endif
+a = k ;
+if -> a  ;
+print -> stugenq_a__ ; 
+print -> a ;
+endif
+
+if -> 4 > 3 ;
+
+b = 15 ;
+print -> b__ ; 
+print -> b ;
+endif
+num z = 10 / 0 ;
+print -> z__ ;
+print -> z ;
+
+z = a * 17 ;
+if -> z > 0 ;
+print -> z___ ; print -> z ;
+endif
+newline
+print -> Thank_you_!!! ;
+
