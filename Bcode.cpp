@@ -47,27 +47,19 @@ bool operator_noequal(double left_operand, double right_operand);
 //function for ending line
 void do_newline();
 
-
-
 struct variable {
     std::string type;
     std::string value;
 };
-
 std::vector<std::string> keywords { "num", "str", "logic", "newline", "if", "endif", "print" };
 std::map<std::string, variable> var_info;
-
-
-
 int main()
 {
     std::ifstream file;
     std::string path;
     std::cout << "Enter the name of the file:";
     std::cin >> path;
-
     file.open (path + ".txt") ;
-
     if (file.is_open())
     {   
       do_interpretation(file);
@@ -76,21 +68,17 @@ int main()
     {
         std::cout << "Something was gone wrong!!!" << std::endl;
     }
-    
     return 0;
 }
-
 
 void do_interpretation(std::ifstream& fin)
 {
     std::string token;
      enum MyKeywords {Num, Str, Logic, Newline, If, Endif, Print };
-    
     while (!fin.eof())
     {
         fin >> token;
         int case_index = is_keyword(token);
-
         switch (case_index) 
         {
           case Num:
@@ -116,9 +104,7 @@ void do_interpretation(std::ifstream& fin)
             do_tanjanq(fin, case_index);
             break;
         }
-
     }
-   
 }
 
 int is_keyword(std::string first_token)
@@ -170,11 +156,8 @@ void do_decleration(std::ifstream& fin, const int type_index) {
             }
             else if (is_operator (tmp))
             {
-                
                 std::string expression;
                 expression += token + tmp;
-              
-
                 while (token != "," && token != ";")
                 {   
                     fin >> token;
@@ -196,6 +179,7 @@ bool is_operator(std::string& tmp)
     }
     return false;
 }
+
 bool is_operator_if(std::string& tmp)
 {
     if (tmp == "==" || tmp == "!=" || tmp == ">" || tmp == "<")
@@ -209,15 +193,12 @@ std::string do_operation(std::string& expression){
     std::string left_operand;
     char center_operand;
     std::string right_operand;
-
     int i = 0;
-
     while (expression[i] != '+' && expression[i] != '-' && expression[i] != '*' && expression[i] != '/' && i < expression.length())
     {
         left_operand.push_back(expression[i]);
         ++i;
     }
-
     if ((expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/') && (i < expression.length()))
     {
         center_operand = expression[i];
@@ -228,7 +209,6 @@ std::string do_operation(std::string& expression){
         right_operand.push_back(expression[i]);
         ++i;
     }
-    
     for (int i = 7; i < keywords.size(); i++){
         if (left_operand == keywords[i]){
             left_operand = var_info[left_operand].value;
@@ -237,25 +217,18 @@ std::string do_operation(std::string& expression){
             right_operand = var_info[right_operand].value;
         }
     }
-    
     if ( is_number (left_operand) && is_number (right_operand) ){
-
         int left_num = std::stoi(left_operand);
         int right_num = std::stoi(right_operand);
         return calculator (left_num, right_num, center_operand);
     }
-
     if ( (is_double (left_operand) && is_number (right_operand)) || (is_double (right_operand) && is_number (left_operand))  || (is_double (right_operand) && is_double (left_operand)) ){
-
         double left_num = std::stod(left_operand);
         double right_num = std::stod(right_operand);
         return calculator (left_num, right_num, center_operand);
     }
-  
   throw std::invalid_argument("ERROR: Wrong operation!");  
 }
-
-
 bool is_number(std::string& operand)
 {
     for (int i = 0; i < operand.size(); ++i)
@@ -268,8 +241,7 @@ bool is_number(std::string& operand)
     return true;
 }
 
-
-bool is_double (std::string& operand){
+bool is_double (std::string& operand) {
     int counter = 0;
     int index = 0;
     for ( int i = 1; i < operand.size()-1; i++){
@@ -292,7 +264,7 @@ bool is_double (std::string& operand){
     return true;
 }
 
-bool is_identifier(std::string& token){
+bool is_identifier(std::string& token) {
     if (is_keyword (token) != -1){
         return false;
     }
@@ -304,53 +276,46 @@ bool is_identifier(std::string& token){
     return true;
 }
 
-
-  
-std::string calculator (int num1, int num2, char operation){
+std::string calculator (int num1, int num2, char operation) {
     enum MyOperators {Addition = '+', Subtraction = '-', Multiplication = '*', Division = '/'};
     switch (operation){
-            case Addition:
+           case Addition:
                 return (std::to_string (num1 + num2));
            case Subtraction:
                  return (std::to_string(num1 - num2));
            case Multiplication:
                  return  (std::to_string(num1 * num2));
-            case Division:
+           case Division:
             if (num2!=0) {
                 return (std::to_string(num1 / num2));
             }else return "div/0 !!!"; 
-  
            default: std::cout << "Error This operation is not defined!" << std::endl;
         }
  return 0;   
 }
 
-std::string calculator (double num1, double num2, char operation){
+std::string calculator (double num1, double num2, char operation) {
     enum MyOperators {Addition = '+', Subtraction = '-', Multiplication = '*', Division = '/'};
     switch (operation){
-            case Addition:
+           case Addition:
                 return (std::to_string (num1 + num2));
            case Subtraction:
                  return (std::to_string(num1 - num2));
            case Multiplication:
                  return  (std::to_string(num1 * num2));
-            case Division:
+           case Division:
             if (num2!=0) {
                 return (std::to_string(num1 / num2));
-            }else return "div/0 !!!"; 
-  
+            } else return "div/0 !!!"; 
            default: std::cout << "Error This operation is not defined!" << std::endl;
         }
  return 0;   
 }
-
-
 
 void do_tanjanq(std::ifstream& fin, const int type_index) {
          std::string name = keywords[type_index];
         std::string token;
-        fin >> token;
-       
+        fin >> token;      
      if (token == "=") 
         {
             fin >> token;
@@ -370,17 +335,13 @@ void do_tanjanq(std::ifstream& fin, const int type_index) {
                 else
                 {
                     throw std::invalid_argument("ERROR: You have used a keyword!");   
-                
                 }
                 token = tmp;
             }
             else if (is_operator (tmp))
             {
-                
                 std::string expression;
                 expression += token + tmp;
-              
-
                 while (token != ";")
                 {   
                     fin >> token;
@@ -388,18 +349,15 @@ void do_tanjanq(std::ifstream& fin, const int type_index) {
                         expression += token;
                     }
                 }
-            
             var_info[name].value = do_operation(expression);
             }
         }
- 
 }
 
-void do_print(std::ifstream& fin, const int type_index){
+void do_print(std::ifstream& fin, const int type_index) {
        std::string name = keywords[type_index];
         std::string token;
         fin >> token;
-       
      if (token == "->") 
         {
             fin >> token;
@@ -418,18 +376,14 @@ void do_print(std::ifstream& fin, const int type_index){
                 }
                 else
                 {
-                    throw std::invalid_argument("ERROR: You have used a keyword!");   
-                
+                    throw std::invalid_argument("ERROR: You have used a keyword!");  
                 }
                 token = tmp;
             }
             else if (is_operator (tmp))
             {
-                
                 std::string expression;
                 expression += token + tmp;
-              
-
                 while (token != ";")
                 {   
                     fin >> token;
@@ -442,17 +396,13 @@ void do_print(std::ifstream& fin, const int type_index){
         }  
 }
 
-
-
-
  bool check_condition(std::ifstream& fin, const int case_index){
         bool result_1;
         std::string token;
         fin >> token;
          if (token == "->") 
         {
-            fin >> token;
-     
+            fin >> token;     
             std::string tmp;
             fin >> tmp;
             if (tmp == ";")                     
@@ -472,23 +422,18 @@ void do_print(std::ifstream& fin, const int type_index){
                 }
                 else if (index == -1)
                 {
-                 
                       return true;
                 }
                 else
                 {
-                    throw std::invalid_argument("ERROR: You have used a keyword!");   
-                
+                    throw std::invalid_argument("ERROR: You have used a keyword!"); 
                 }
                 token = tmp;
             }
             else if (is_operator_if (tmp))
             {
-                
                 std::string expression;
                 expression += token + tmp;
-              
-
                 while (token != ";")
                 {   
                     fin >> token;
@@ -500,42 +445,29 @@ void do_print(std::ifstream& fin, const int type_index){
           return result;
             }
         }  
-
-        }
-
+ }
 
 bool left_center_right (std::string& str_new)
 { 
     std::string left_operand;
     std::string center_operand;
-    std::string right_operand;
-    
+    std::string right_operand;    
     int i = 0;
-
     while (str_new[i] != '!' &&str_new[i] != '=' && str_new[i] != '>' && str_new[i] != '<' && i < str_new.length())
     {
        left_operand.push_back(str_new[i]);
        ++i;
     }
-  
-
-  
     while ((str_new[i] == '!' || str_new[i] == '=' || str_new[i] == '>' || str_new[i] == '<' ) && (i < str_new.length()))
     {
         center_operand.push_back(str_new[i]);
       ++i;
     }
-  
- 
-  
     while (i < str_new.length())
     {
         right_operand.push_back(str_new[i]);
         ++i;
     }
-  
-   
-   
   for (int i = 7; i < keywords.size(); i++){
         if (left_operand == keywords[i]){
             left_operand = var_info[left_operand].value;
@@ -544,7 +476,6 @@ bool left_center_right (std::string& str_new)
             right_operand = var_info[right_operand].value;
         }
     }
-
      bool result;
      double left_num;
      double right_num;
@@ -552,13 +483,11 @@ bool left_center_right (std::string& str_new)
         left_num = std::stod(left_operand);
         right_num = std::stod(right_operand);
     }
-  
     if (center_operand == "==")
     {
         result = operator_equal(left_num, right_num);
         return result;
-    } 
-
+    }
      else  if (center_operand == "!=")
     {
     result = operator_noequal(left_num, right_num);
@@ -569,15 +498,10 @@ bool left_center_right (std::string& str_new)
     result = operator_big_small(center_operand, left_num, right_num);
     return result;
     } 
-  
 }
   
-
-
-
 bool operator_big_small(std::string& center_operand, double left_num, double right_num)
-{
-        
+{      
     if (center_operand[0] == '>')
     {
           if (left_num > right_num)
@@ -607,8 +531,6 @@ bool operator_big_small(std::string& center_operand, double left_num, double rig
      }
 }
 
-
-
 bool operator_equal(double left_operand, double right_operand)
 {
     if (left_operand == right_operand)
@@ -631,8 +553,7 @@ void do_endif() {
 }
 
 void do_condition(std::ifstream& fin, const int case_index){
-    std::string  token;
-    
+    std::string  token;    
     if (!(check_condition (fin, case_index))){
         fin >> token;
         while (!fin.eof() ){
